@@ -7,4 +7,3 @@ pandas
 djangorestframework
 djangorestframework-jwt
 djangorestframework-simplejwt
-drf_yasg
