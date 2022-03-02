@@ -12,9 +12,25 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 # path('blog/', blog.urls, name="blog")
 #
 # Learn more here: https://docs.djangoproject.com/en/2.1/topics/http/urls/
-
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Jaseci API",
+        default_version='v1',
+        description="Welcome to the world of Jaseci",
+        terms_of_service="https://www.jaseci.org",
+        contact=openapi.Contact(email="jason@jaseci.org"),
+        license=openapi.License(name="Awesome IP"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 urlpatterns = [
-    path("", hello.views.index, name="index"),
+    path('redoc/', schema_view.with_ui('swagger', cache_timeout=0),
+         name='schema-swagger-ui'),  #<-- Here
+
     path("db/", hello.views.db, name="db"),
     path("admin/", admin.site.urls),
     path('api/v1/logout/',LogoutView.as_view(), name='user-logout'),
