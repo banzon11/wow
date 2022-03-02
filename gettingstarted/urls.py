@@ -27,5 +27,5 @@ urlpatterns = [
     path('api/v1/sales/<int:id>',NewSalesUserView.as_view(), name='salesuser'),
     path('api/v1/import/place/<int:id>',UploadCountryAndCityView.as_view(), name='import-place'),
     path('api/v1/import/sales/<int:id>',UploadSalesView.as_view(), name='import-sales'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+
 ]
