@@ -105,7 +105,7 @@ class LoginView(APIView):
                 return Response({"status": "Failed", "message": "Password is incorrect."},
                                 status=status.HTTP_400_BAD_REQUEST)
             print("waw")
-            token = Token.objects.get(user=user)
+            token,created = Token.objects.get_or_create(user=user)
             
             
           
@@ -120,7 +120,7 @@ class LoginView(APIView):
 class LogoutView(APIView):
 
     def get(self, request):
-        blackListToken(request)
+        request.user.auth_token.delete()
         return Response(status=status.HTTP_200_OK)
 
 #For the countries VIew
@@ -298,6 +298,7 @@ class SalesView(APIView):
 
 
 class UploadCountryAndCityView(APIView):
+    permission_classes = () 
     def post(self,request):
         try:
             file = request.FILES['file']
@@ -312,6 +313,7 @@ class UploadCountryAndCityView(APIView):
             print("waw")
 
 class UploadSalesView(APIView):
+    permission_classes = () 
     def post(self,request,id=None):
         print(id)
         try:
@@ -325,5 +327,6 @@ class UploadSalesView(APIView):
                 prod,created=Product.objects.get_or_create(name=row['product'])
                 sp=SalesProduct.objects.create(sales_number=row['sales_number'],revenue=row['revenue'],product=prod,date=row['date'],user=user )
             return Response(status=status.HTTP_200_OK)
-        except:
-            print("waw")
+        except Exception as e:
+            return Response({"status": "failed", "message": "Something went wrong. Document failed to update. {}".format(e)},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
