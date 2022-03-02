@@ -84,8 +84,9 @@ def validate_decoded_token(request):
 
 # First part is for the authentication and logout of users
 class LoginView(APIView):
-
+    permission_classes = () 
     def post(self, request):
+        
         email = request.data["email"]
     
         password = request.data["password"]
